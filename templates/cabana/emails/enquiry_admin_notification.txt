@@ -1,0 +1,11 @@
+New website enquiry received — Cannelle Hill Cabanas
+
+Name: {{ enquiry.name }}
+Email: {{ enquiry.email }}
+Phone: {{ enquiry.phone|default:"Not provided" }}
+Subject: {{ enquiry.subject|default:"General enquiry" }}
+
+Message:
+{{ enquiry.message }}
+
+Manage this enquiry in the admin dashboard: /admin/cabana/contactenquiry/

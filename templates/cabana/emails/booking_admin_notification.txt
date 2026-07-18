@@ -1,0 +1,16 @@
+New booking request received — Cannelle Hill Cabanas
+
+Guest: {{ booking.full_name }}
+Email: {{ booking.email }}
+Phone: {{ booking.phone }}
+
+Room requested: {{ booking.room|default:"No preference specified" }}
+Check-in: {{ booking.check_in }}
+Check-out: {{ booking.check_out }}
+Adults: {{ booking.adults }}
+Children: {{ booking.children }}
+
+Special requests:
+{{ booking.special_requests|default:"None" }}
+
+Manage this booking in the admin dashboard: /admin/cabana/booking/

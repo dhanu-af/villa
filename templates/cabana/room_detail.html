@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+  <header class="chc-page-header" style="background-image: url('{% if room.main_image %}{{ room.main_image.url }}{% else %}{% static 'images/placeholder-hero.svg' %}{% endif %}');">
+    <div class="container">
+      <p class="text-uppercase mb-2" style="letter-spacing:0.2em; color:#e6cd8b;">Accommodation</p>
+      <h1>{{ room.name }}</h1>
+    </div>
+  </header>
+
+  <section class="chc-section">
+    <div class="container">
+      <div class="row g-5">
+        {# ---------- Room details & photo gallery ---------- #}
+        <div class="col-lg-7">
+          <div class="row g-3 mb-4">
+            <div class="col-12">
+              <img src="{% if room.main_image %}{{ room.main_image.url }}{% else %}{% static 'images/placeholder-room.svg' %}{% endif %}" class="img-fluid rounded-4 shadow w-100" style="max-height:420px; object-fit:cover;" alt="{{ room.name }}">
+            </div>
+            {% for img in room.images.all %}
+              <div class="col-4">
+                <img src="{{ img.image.url }}" class="img-fluid rounded-3" style="height:110px; object-fit:cover; width:100%;" alt="{{ img.caption|default:room.name }}" loading="lazy">
+              </div>
+            {% endfor %}
+          </div>
+
+          <h3 class="mb-3">About This Room</h3>
+          <p class="text-muted fs-5">{{ room.description }}</p>
+
+          <ul class="list-inline text-muted mb-4">
+            <li class="list-inline-item me-4"><i class="bi bi-people me-1"></i>Sleeps {{ room.max_guests }}</li>
+            {% if room.size_sqm %}<li class="list-inline-item me-4"><i class="bi bi-arrows-angle-expand me-1"></i>{{ room.size_sqm }} m&sup2;</li>{% endif %}
+            {% if room.bed_type %}<li class="list-inline-item me-4"><i class="bi bi-moon me-1"></i>{{ room.bed_type }}</li>{% endif %}
+          </ul>
+
+          {% if room.amenities.all %}
+            <h4 class="mb-3">Room Amenities</h4>
+            <div class="row">
+              {% for amenity in room.amenities.all %}
+                <div class="col-6 col-md-4 mb-3">
+                  <i class="bi {{ amenity.icon }} me-2" style="color: var(--chc-gold-dark);"></i>{{ amenity.name }}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        {# ---------- Sticky booking card ---------- #}
+        <div class="col-lg-5">
+          <div class="chc-card chc-card-body" style="position:sticky; top:100px;">
+            <div class="d-flex justify-content-between align-items-baseline mb-3">
+              <span class="chc-price fs-2">${{ room.price_per_night }}</span>
+              <span class="text-muted">/ night</span>
+            </div>
+            <form method="post" action="{% url 'cabana:booking' %}">
+              {% csrf_token %}
+              <input type="hidden" name="room" value="{{ room.id }}">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Full Name</label>
+                {{ booking_form.full_name }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Email</label>
+                {{ booking_form.email }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Phone</label>
+                {{ booking_form.phone }}
+              </div>
+              <div class="row g-2 mb-3">
+                <div class="col-6">
+                  <label class="form-label fw-semibold">Check-in</label>
+                  {{ booking_form.check_in }}
+                </div>
+                <div class="col-6">
+                  <label class="form-label fw-semibold">Check-out</label>
+                  {{ booking_form.check_out }}
+                </div>
+              </div>
+              <div class="row g-2 mb-3">
+                <div class="col-6">
+                  <label class="form-label fw-semibold">Adults</label>
+                  {{ booking_form.adults }}
+                </div>
+                <div class="col-6">
+                  <label class="form-label fw-semibold">Children</label>
+                  {{ booking_form.children }}
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Special Requests</label>
+                {{ booking_form.special_requests }}
+              </div>
+              <button type="submit" class="btn btn-gold w-100">Request to Book</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

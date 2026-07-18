@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+  <rect width="600" height="400" fill="#eef2ea"/>
+  <rect x="0" y="0" width="600" height="400" fill="none" stroke="#c8a24d" stroke-width="4" stroke-dasharray="10 8"/>
+  <text x="50%" y="48%" text-anchor="middle" font-family="Georgia, serif" font-size="26" fill="#34573f">Cannelle Hill Cabanas</text>
+  <text x="50%" y="56%" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#6d7a68">Photo coming soon</text>
+</svg>

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+  <header class="chc-page-header" style="background-image: url('{% static 'images/placeholder-hero.svg' %}');">
+    <div class="container">
+      <p class="text-uppercase mb-2" style="letter-spacing:0.2em; color:#e6cd8b;">Reserve Your Stay</p>
+      <h1>Book Now</h1>
+    </div>
+  </header>
+
+  <section class="chc-section">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="chc-card chc-card-body">
+            <form method="post">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Room</label>
+                {{ form.room }}
+                <div class="form-text">Leave as-is if you don't have a preference — we'll match you to the best available cabana.</div>
+              </div>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Full Name</label>
+                  {{ form.full_name }}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Email</label>
+                  {{ form.email }}
+                </div>
+              </div>
+              <div class="row g-3 mt-0">
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Phone</label>
+                  {{ form.phone }}
+                </div>
+              </div>
+              <div class="row g-3 mt-0">
+                <div class="col-md-3">
+                  <label class="form-label fw-semibold">Check-in</label>
+                  {{ form.check_in }}
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label fw-semibold">Check-out</label>
+                  {{ form.check_out }}
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label fw-semibold">Adults</label>
+                  {{ form.adults }}
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label fw-semibold">Children</label>
+                  {{ form.children }}
+                </div>
+              </div>
+              <div class="mb-3 mt-3">
+                <label class="form-label fw-semibold">Special Requests</label>
+                {{ form.special_requests }}
+              </div>
+              {% if form.non_field_errors %}
+                <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+              {% endif %}
+              <button type="submit" class="btn btn-gold btn-lg w-100 mt-2">Submit Booking Request</button>
+              <p class="text-muted small text-center mt-3 mb-0">This is a request, not a confirmed reservation — our team will follow up by email to confirm availability.</p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

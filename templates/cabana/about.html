@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static cabana_extras %}
+
+{% block content %}
+
+  <header class="chc-page-header" style="background-image: url('{% if site.hero_image %}{{ site.hero_image.url }}{% else %}{% static 'images/placeholder-hero.svg' %}{% endif %}');">
+    <div class="container">
+      <p class="text-uppercase mb-2" style="letter-spacing:0.2em; color:#e6cd8b;">About Us</p>
+      <h1>The Story of {{ site.site_name }}</h1>
+      {% if site.google_rating %}
+        <div class="d-inline-flex align-items-center gap-2 mt-2" style="color:#e6cd8b;">
+          {% for _ in site.google_rating|floatformat:0|times %}<i class="bi bi-star-fill"></i>{% endfor %}
+          <span class="fw-semibold">{{ site.google_rating }}/5</span>
+          {% if site.google_review_count %}<span class="text-white-50">({{ site.google_review_count }} Google Reviews)</span>{% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </header>
+
+  {# ============================== OUR STORY ============================== #}
+  <section class="chc-section">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <img src="{% static 'images/placeholder-room.svg' %}" alt="Our story" class="img-fluid rounded-4 shadow" loading="lazy">
+        </div>
+        <div class="col-lg-6">
+          <p class="eyebrow">Our Story</p>
+          <h2 class="mb-3">Rooted in the Hills, Built for Rest</h2>
+          <p class="text-muted fs-5">
+            {{ site.about_summary|default:"Cannelle Hill Cabanas was born from a simple idea: that true luxury is found in stillness, fresh air, and the quiet company of nature. Set among rolling green hills, our cabanas were designed to give guests a private, sustainable retreat without sacrificing modern comfort." }}
+          </p>
+          <p class="text-muted fs-5">
+            Every cabana is built using locally sourced, eco-conscious materials, and every detail — from the linens to the landscaping — reflects our commitment to slow, mindful hospitality.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {# ============================== MISSION / PHILOSOPHY ============================== #}
+  <section class="chc-section chc-section-alt">
+    <div class="container">
+      <div class="chc-section-title">
+        <p class="eyebrow">Our Philosophy</p>
+        <h2>Eco-Luxury, Done Right</h2>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-4 chc-amenity">
+          <i class="bi bi-tree"></i>
+          <h5>Sustainable by Design</h5>
+          <p class="text-muted">Solar power, rainwater harvesting, and native landscaping keep our footprint light.</p>
+        </div>
+        <div class="col-md-4 chc-amenity">
+          <i class="bi bi-cup-hot"></i>
+          <h5>Farm-to-Table Dining</h5>
+          <p class="text-muted">Meals are prepared with produce grown on-site or sourced from local growers.</p>
+        </div>
+        <div class="col-md-4 chc-amenity">
+          <i class="bi bi-heart"></i>
+          <h5>Genuine Hospitality</h5>
+          <p class="text-muted">A small, dedicated team focused on warm, personal service for every guest.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {# ============================== CTA ============================== #}
+  <section class="chc-section text-center text-white" style="background: var(--chc-green-dark);">
+    <div class="container">
+      <h2 class="text-white mb-3">Come Experience It Yourself</h2>
+      <p class="mb-4 fs-5" style="color:#e6cd8b;">Browse our cabanas and start planning your stay.</p>
+      <a href="{% url 'cabana:rooms' %}" class="btn btn-gold btn-lg px-5">View Rooms</a>
+    </div>
+  </section>
+
+{% endblock %}

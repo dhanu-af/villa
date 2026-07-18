@@ -1,0 +1,17 @@
+Dear {{ booking.full_name }},
+
+Thank you for your booking request with Cannelle Hill Cabanas!
+
+Here is a summary of your request:
+Room: {{ booking.room|default:"No preference specified" }}
+Check-in: {{ booking.check_in }}
+Check-out: {{ booking.check_out }}
+Adults: {{ booking.adults }}
+Children: {{ booking.children }}
+
+Our reservations team will confirm availability and follow up with you by
+email shortly. If you have any urgent questions in the meantime, please
+reply to this email or reach us on WhatsApp.
+
+Warm regards,
+Cannelle Hill Cabanas

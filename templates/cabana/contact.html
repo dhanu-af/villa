@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load static cabana_extras %}
+
+{% block content %}
+
+  <header class="chc-page-header" style="background-image: url('{% static 'images/placeholder-hero.svg' %}');">
+    <div class="container">
+      <p class="text-uppercase mb-2" style="letter-spacing:0.2em; color:#e6cd8b;">Get In Touch</p>
+      <h1>Contact Us</h1>
+    </div>
+  </header>
+
+  <section class="chc-section">
+    <div class="container">
+      <div class="row g-5">
+        {# ---------- Contact form ---------- #}
+        <div class="col-lg-6">
+          <h3 class="mb-4">Send Us a Message</h3>
+          <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Name</label>
+              {{ form.name }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Email</label>
+              {{ form.email }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Phone (optional)</label>
+              {{ form.phone }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Subject</label>
+              {{ form.subject }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Message</label>
+              {{ form.message }}
+            </div>
+            <button type="submit" class="btn btn-gold px-4">Send Message</button>
+          </form>
+        </div>
+
+        {# ---------- Contact info + map + socials ---------- #}
+        <div class="col-lg-6">
+          <h3 class="mb-4">Visit or Reach Us</h3>
+          <ul class="list-unstyled fs-5">
+            {% if site.address %}<li class="mb-3"><i class="bi bi-geo-alt me-2" style="color: var(--chc-gold-dark);"></i>{{ site.address }}</li>{% endif %}
+            {% if site.phone %}<li class="mb-3"><i class="bi bi-telephone me-2" style="color: var(--chc-gold-dark);"></i><a href="tel:{{ site.phone }}">{{ site.phone }}</a></li>{% endif %}
+            {% if site.google_rating %}
+              <li class="mb-3">
+                {% for _ in site.google_rating|floatformat:0|times %}<i class="bi bi-star-fill" style="color: var(--chc-gold);"></i>{% endfor %}
+                <span class="fw-semibold ms-1">Rated {{ site.google_rating }}/5 by guests on Google</span>
+                {% if site.google_review_count %}<span class="text-muted">({{ site.google_review_count }} reviews)</span>{% endif %}
+              </li>
+            {% endif %}
+            {% if site.email %}<li class="mb-3"><i class="bi bi-envelope me-2" style="color: var(--chc-gold-dark);"></i><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>{% endif %}
+            {% if site.whatsapp_number %}
+              <li class="mb-3">
+                <a href="https://wa.me/{{ site.whatsapp_number }}" target="_blank" rel="noopener" class="btn btn-outline-green">
+                  <i class="bi bi-whatsapp me-2"></i>Chat on WhatsApp
+                </a>
+              </li>
+            {% endif %}
+          </ul>
+
+          <div class="social-icons mb-4">
+            {% if site.facebook_url %}<a href="{{ site.facebook_url }}" target="_blank" rel="noopener" class="btn btn-outline-green btn-sm me-2"><i class="bi bi-facebook"></i></a>{% endif %}
+            {% if site.instagram_url %}<a href="{{ site.instagram_url }}" target="_blank" rel="noopener" class="btn btn-outline-green btn-sm me-2"><i class="bi bi-instagram"></i></a>{% endif %}
+            {% if site.twitter_url %}<a href="{{ site.twitter_url }}" target="_blank" rel="noopener" class="btn btn-outline-green btn-sm me-2"><i class="bi bi-twitter-x"></i></a>{% endif %}
+            {% if site.youtube_url %}<a href="{{ site.youtube_url }}" target="_blank" rel="noopener" class="btn btn-outline-green btn-sm"><i class="bi bi-youtube"></i></a>{% endif %}
+          </div>
+
+          {# ---------- Google Maps embed ---------- #}
+          <div class="ratio ratio-4x3 rounded-4 overflow-hidden shadow">
+            {% if site.google_maps_embed_url %}
+              <iframe src="{{ site.google_maps_embed_url }}" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            {% else %}
+              <div class="d-flex align-items-center justify-content-center bg-light text-muted">
+                Add a Google Maps embed URL in the admin dashboard to show the map here.
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+  <header class="chc-page-header" style="background-image: url('{% static 'images/placeholder-hero.svg' %}');">
+    <div class="container">
+      <p class="text-uppercase mb-2" style="letter-spacing:0.2em; color:#e6cd8b;">Facilities</p>
+      <h1>Facilities &amp; Amenities</h1>
+    </div>
+  </header>
+
+  <section class="chc-section">
+    <div class="container">
+      <div class="row g-4">
+        {% for amenity in amenities %}
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="chc-card chc-amenity">
+              <i class="bi {{ amenity.icon }}"></i>
+              <h5 class="mb-1">{{ amenity.name }}</h5>
+              {% if amenity.description %}<p class="text-muted small mb-0">{{ amenity.description }}</p>{% endif %}
+            </div>
+          </div>
+        {% empty %}
+          <div class="col-12 text-center text-muted py-5">
+            Amenities will appear here once added in the admin dashboard.
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+{% load static cabana_extras %}
+
+{% block content %}
+
+  {# ============================== FULL-SCREEN HERO ============================== #}
+  <section class="chc-hero" style="background-image: url('{% if site.hero_image %}{{ site.hero_image.url }}{% else %}{% static 'images/placeholder-hero.svg' %}{% endif %}');">
+    <div class="container text-center">
+      <p class="text-uppercase mb-2" style="letter-spacing:0.2em; color:#e6cd8b;">Welcome to</p>
+      <h1 class="fw-bold mb-3">{{ site.site_name }}</h1>
+      <p class="lead mx-auto" style="max-width:640px;">{{ site.tagline }}</p>
+      {% if site.google_rating %}
+        <div class="d-inline-flex align-items-center gap-2 mt-2 mb-2" style="color:#e6cd8b;">
+          {% for _ in site.google_rating|floatformat:0|times %}<i class="bi bi-star-fill"></i>{% endfor %}
+          <span class="fw-semibold">{{ site.google_rating }}/5</span>
+          {% if site.google_review_count %}<span class="text-white-50">({{ site.google_review_count }} Google Reviews)</span>{% endif %}
+        </div>
+      {% endif %}
+      {% if site.hero_description %}
+        <p class="mx-auto text-white-50" style="max-width:680px;">{{ site.hero_description }}</p>
+      {% endif %}
+      <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center mt-4">
+        <a href="{% url 'cabana:booking' %}" class="btn btn-gold btn-lg px-4">Book Your Stay</a>
+        <a href="{% url 'cabana:rooms' %}" class="btn btn-outline-light btn-lg px-4">Explore Rooms</a>
+      </div>
+    </div>
+    <a href="#chcQuickSearch" class="chc-hero-scroll" aria-label="Scroll down">
+      <i class="bi bi-chevron-down fs-2"></i>
+    </a>
+  </section>
+
+  {# ============================== QUICK AVAILABILITY SEARCH ============================== #}
+  <div class="container" id="chcQuickSearch">
+    <form class="chc-quick-search row g-3 align-items-end" method="get" action="{% url 'cabana:booking' %}">
+      <div class="col-md-3">
+        <label for="qsCheckIn" class="form-label fw-semibold">Check-in</label>
+        <input type="date" class="form-control" id="qsCheckIn" name="check_in">
+      </div>
+      <div class="col-md-3">
+        <label for="qsCheckOut" class="form-label fw-semibold">Check-out</label>
+        <input type="date" class="form-control" id="qsCheckOut" name="check_out">
+      </div>
+      <div class="col-md-2">
+        <label for="qsAdults" class="form-label fw-semibold">Adults</label>
+        <input type="number" min="1" value="2" class="form-control" id="qsAdults" name="adults">
+      </div>
+      <div class="col-md-2">
+        <label for="qsChildren" class="form-label fw-semibold">Children</label>
+        <input type="number" min="0" value="0" class="form-control" id="qsChildren" name="children">
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-green w-100">
+          <i class="bi bi-search me-1"></i> Check Availability
+        </button>
+      </div>
+    </form>
+  </div>
+
+  {# ============================== ABOUT TEASER ============================== #}
+  <section class="chc-section">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <img src="{% static 'images/placeholder-room.svg' %}" alt="About {{ site.site_name }}" class="img-fluid rounded-4 shadow" loading="lazy">
+        </div>
+        <div class="col-lg-6">
+          <p class="eyebrow">Our Story</p>
+          <h2 class="mb-3">A Sanctuary Among the Hills</h2>
+          <p class="text-muted fs-5">
+            {{ site.about_summary|default:"Nestled in the scenic countryside of Deniyaya, our cabanas offer a tranquil retreat with beautiful mountain and garden views, surrounded by nature." }}
+          </p>
+          <a href="{% url 'cabana:about' %}" class="btn btn-outline-green mt-2">Learn More About Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {# ============================== ROOMS TEASER ============================== #}
+  <section class="chc-section chc-section-alt">
+    <div class="container">
+      <div class="chc-section-title">
+        <p class="eyebrow">Accommodation</p>
+        <h2>Our Cabanas &amp; Rooms</h2>
+      </div>
+      <div class="row g-4">
+        {% for room in rooms %}
+          <div class="col-md-6 col-lg-4">
+            <div class="chc-card">
+              <img src="{% if room.main_image %}{{ room.main_image.url }}{% else %}{% static 'images/placeholder-room.svg' %}{% endif %}" alt="{{ room.name }}" loading="lazy">
+              <div class="chc-card-body">
+                <h4>{{ room.name }}</h4>
+                <p class="text-muted">{{ room.short_description }}</p>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                  <span class="chc-price">${{ room.price_per_night }}<small class="text-muted fw-normal"> /night</small></span>
+                  <a href="{% url 'cabana:room_detail' room.slug %}" class="btn btn-outline-green btn-sm">View Details</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% empty %}
+          <div class="col-12 text-center text-muted">
+            Room details will appear here once they're added in the admin dashboard.
+          </div>
+        {% endfor %}
+      </div>
+      <div class="text-center mt-5">
+        <a href="{% url 'cabana:rooms' %}" class="btn btn-green px-4">View All Rooms</a>
+      </div>
+    </div>
+  </section>
+
+  {# ============================== SPECIAL OFFERS TEASER ============================== #}
+  {% if offers %}
+  <section class="chc-section">
+    <div class="container">
+      <div class="chc-section-title">
+        <p class="eyebrow">Limited Time</p>
+        <h2>Special Offers</h2>
+      </div>
+      <div class="row g-4">
+        {% for offer in offers %}
+          <div class="col-md-6">
+            <div class="chc-card chc-card-body d-flex align-items-center gap-3">
+              {% if offer.discount_percent %}
+                <div class="fs-2 fw-bold" style="color: var(--chc-gold-dark);">-{{ offer.discount_percent }}%</div>
+              {% endif %}
+              <div>
+                <h5 class="mb-1">{{ offer.title }}</h5>
+                <p class="text-muted mb-0">{{ offer.description }}</p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="text-center mt-4">
+        <a href="{% url 'cabana:rates' %}" class="btn btn-outline-green">See All Rates &amp; Offers</a>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {# ============================== AMENITIES STRIP ============================== #}
+  <section class="chc-section chc-section-alt">
+    <div class="container">
+      <div class="chc-section-title">
+        <p class="eyebrow">Why Stay With Us</p>
+        <h2>Facilities &amp; Amenities</h2>
+      </div>
+      <div class="row">
+        {% for amenity in amenities %}
+          <div class="col-6 col-md-4 col-lg-2 chc-amenity">
+            <i class="bi {{ amenity.icon }}"></i>
+            <p class="mb-0 fw-semibold">{{ amenity.name }}</p>
+          </div>
+        {% empty %}
+          <div class="col-12 text-center text-muted">Amenities will appear here once added in the admin dashboard.</div>
+        {% endfor %}
+      </div>
+      <div class="text-center mt-4">
+        <a href="{% url 'cabana:amenities' %}" class="btn btn-outline-green">View All Amenities</a>
+      </div>
+    </div>
+  </section>
+
+  {# ============================== TESTIMONIALS ============================== #}
+  <section class="chc-section">
+    <div class="container">
+      <div class="chc-section-title">
+        <p class="eyebrow">Guest Love</p>
+        <h2>What Our Guests Say</h2>
+      </div>
+      <div class="row g-4">
+        {% for t in testimonials %}
+          <div class="col-md-6 col-lg-4">
+            <div class="chc-testimonial">
+              <div class="stars mb-2">
+                {% for _ in t.rating|times %}<i class="bi bi-star-fill"></i>{% endfor %}
+              </div>
+              <p class="fst-italic">&ldquo;{{ t.comment }}&rdquo;</p>
+              <div class="d-flex align-items-center mt-3">
+                <img src="{% if t.photo %}{{ t.photo.url }}{% else %}{% static 'images/placeholder-avatar.svg' %}{% endif %}" width="44" height="44" class="rounded-circle me-3" alt="{{ t.guest_name }}" loading="lazy">
+                <div>
+                  <div class="fw-semibold">{{ t.guest_name }}</div>
+                  <small class="text-muted">{{ t.country }}</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% empty %}
+          <div class="col-12 text-center text-muted">Guest reviews will appear here once approved in the admin dashboard.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  {# ============================== FINAL CTA ============================== #}
+  <section class="chc-section text-center text-white" style="background: var(--chc-green-dark);">
+    <div class="container">
+      <h2 class="text-white mb-3">Ready for Your Eco-Luxury Escape?</h2>
+      <p class="mb-4 fs-5" style="color:#e6cd8b;">Reserve your cabana today and reconnect with nature in comfort.</p>
+      <a href="{% url 'cabana:booking' %}" class="btn btn-gold btn-lg px-5">Book Now</a>
+    </div>
+  </section>
+
+{% endblock %}

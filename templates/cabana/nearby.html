@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+  <header class="chc-page-header" style="background-image: url('{% static 'images/placeholder-hero.svg' %}');">
+    <div class="container">
+      <p class="text-uppercase mb-2" style="letter-spacing:0.2em; color:#e6cd8b;">Explore</p>
+      <h1>Things To Do Nearby</h1>
+    </div>
+  </header>
+
+  <section class="chc-section">
+    <div class="container">
+      <div class="row g-4">
+        {% for place in attractions %}
+          <div class="col-md-6 col-lg-4">
+            <div class="chc-card">
+              <img src="{% if place.image %}{{ place.image.url }}{% else %}{% static 'images/placeholder-room.svg' %}{% endif %}" alt="{{ place.name }}" loading="lazy">
+              <div class="chc-card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                  <h5>{{ place.name }}</h5>
+                  {% if place.distance %}<span class="badge" style="background: var(--chc-gold); color:#fff;">{{ place.distance }}</span>{% endif %}
+                </div>
+                <p class="text-muted">{{ place.description }}</p>
+              </div>
+            </div>
+          </div>
+        {% empty %}
+          <div class="col-12 text-center text-muted py-5">
+            Nearby attractions will appear here once added in the admin dashboard.
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+{% endblock %}
