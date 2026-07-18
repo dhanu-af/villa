@@ -193,3 +193,26 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
 
 LOGIN_URL = '/admin/login/'
+
+# ---------------------------------------------------------------------------
+# Logging
+# Django's own default logging silently drops request exceptions to email
+# (mail_admins) once DEBUG=False, so nothing shows up in `railway logs` /
+# similar. Route them to the console instead.
+# ---------------------------------------------------------------------------
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    },
+}
