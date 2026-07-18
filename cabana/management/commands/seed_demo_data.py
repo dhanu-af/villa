@@ -50,6 +50,7 @@ class Command(BaseCommand):
         self._cleanup_stale_entries()
         self._seed_site_settings()
         self._seed_amenities()
+        self._seed_rooms()
         self._seed_room_features()
         self._seed_gallery_categories()
         self._seed_special_offers()
@@ -117,6 +118,57 @@ class Command(BaseCommand):
         ]
         for i, (name, icon, desc) in enumerate(amenities):
             Amenity.objects.update_or_create(name=name, defaults={"icon": icon, "description": desc, "order": i})
+
+    def _seed_rooms(self):
+        # Room names/descriptions/prices are still placeholders pending the
+        # real figures — update from the admin dashboard once available.
+        rooms = [
+            dict(
+                name="Garden View Cabana",
+                short_description="A cozy cabana surrounded by tropical gardens.",
+                description=(
+                    "Our Garden View Cabana offers a peaceful escape surrounded by lush tropical "
+                    "greenery. Featuring a private veranda, king-size bed, and rain shower, it's "
+                    "the perfect base for couples or solo travelers seeking quiet comfort."
+                ),
+                price_per_night=95,
+                max_guests=2,
+                size_sqm=32,
+                bed_type="King Bed",
+                order=1,
+            ),
+            dict(
+                name="Hillside Deluxe Villa",
+                short_description="Spacious villa with panoramic hill views.",
+                description=(
+                    "The Hillside Deluxe Villa is our most spacious accommodation, featuring "
+                    "floor-to-ceiling windows that frame sweeping views of the surrounding hills. "
+                    "Includes a private plunge pool, sitting area, and outdoor dining deck."
+                ),
+                price_per_night=165,
+                max_guests=4,
+                size_sqm=55,
+                bed_type="King Bed + Sofa Bed",
+                order=2,
+            ),
+            dict(
+                name="Family Eco Cabana",
+                short_description="A larger cabana designed for families.",
+                description=(
+                    "Our Family Eco Cabana comfortably sleeps up to five guests across two rooms, "
+                    "with a shared living area and a garden-facing patio — ideal for families "
+                    "wanting space without leaving nature behind."
+                ),
+                price_per_night=135,
+                max_guests=5,
+                size_sqm=48,
+                bed_type="Two Queen Beds + Bunk",
+                order=3,
+            ),
+        ]
+        for room in rooms:
+            name = room.pop("name")
+            Room.objects.update_or_create(name=name, defaults=room)
 
     def _seed_room_features(self):
         # Shared per-room features, assigned to every existing room. Room
